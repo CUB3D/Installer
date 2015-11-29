@@ -1,0 +1,8 @@
+.idea/workspace.xml
+.idea/tasks.xml
+
+*.iws
+
+*.class
+
+*.csv

@@ -1,0 +1,10 @@
+{
+  "Modules": {
+    "BaseFiles": {
+      "required":true
+    },
+    "Extras": {
+      "required":false
+    }
+  }
+}
