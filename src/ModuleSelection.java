@@ -1,6 +1,7 @@
 import jdk.nashorn.internal.parser.JSONParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import sun.reflect.generics.tree.Tree;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -11,7 +12,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.LayoutQueue;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -26,11 +29,26 @@ public class ModuleSelection
     private JButton backButton;
     private JPanel content;
     private JTree tree1;
+    private JButton dissableButton;
+    private JButton enableButton;
 
     public ModuleSelection(JFrame frame)
     {
         frame.setContentPane(content);
         frame.pack();
+
+        enableButton.addActionListener((a) -> onEnable());
+    }
+
+    private void onEnable()
+    {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree1.getLastSelectedPathComponent();
+
+        String name = node.getUserObject().toString();
+
+        ((TreeRenderer)tree1.getCellRenderer()).disabledModules.add(name);
+
+        tree1.invalidate();
     }
 
     private void createUIComponents()
@@ -38,6 +56,8 @@ public class ModuleSelection
         DefaultMutableTreeNode top = new DefaultMutableTreeNode("Modules");
 
         loadModules(top);
+
+        tree1.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
     }
 
     private void loadModules(DefaultMutableTreeNode top)
@@ -67,15 +87,14 @@ public class ModuleSelection
 
                 DefaultMutableTreeNode catagory = new DefaultMutableTreeNode(name);
 
+                catagory.setAllowsChildren(false);
+
                 top.add(catagory);
             }
 
             tree1 = new JTree(top);
 
-            ImageIcon leafIcon = new ImageIcon("Check.png");
-            DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
-            renderer.setIcon(leafIcon);
-            renderer.setLeafIcon(leafIcon);
+            TreeRenderer renderer = new TreeRenderer();
             tree1.setCellRenderer(renderer);
         }catch(Exception e) {e.printStackTrace();}
     }
