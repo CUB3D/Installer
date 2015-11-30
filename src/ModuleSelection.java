@@ -1,23 +1,12 @@
-import jdk.nashorn.internal.parser.JSONParser;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import sun.reflect.generics.tree.Tree;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.LayoutQueue;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreeSelectionModel;
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.io.IOException;
+import javax.swing.table.TableModel;
+import java.awt.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Vector;
 
 /**
  * Created by Callum on 29/11/2015.
@@ -28,40 +17,55 @@ public class ModuleSelection
     private JButton nextButton;
     private JButton backButton;
     private JPanel content;
-    private JTree tree1;
-    private JButton dissableButton;
-    private JButton enableButton;
+    private JTable table1;
+
+    private JFrame frame;
 
     public ModuleSelection(JFrame frame)
     {
         frame.setContentPane(content);
         frame.pack();
+        nextButton.addActionListener((a) -> onNext());
 
-        enableButton.addActionListener((a) -> onEnable());
+        this.frame = frame;
     }
 
-    private void onEnable()
+    private void onNext()
     {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree1.getLastSelectedPathComponent();
-
-        String name = node.getUserObject().toString();
-
-        ((TreeRenderer)tree1.getCellRenderer()).disabledModules.add(name);
-
-        tree1.invalidate();
+        new InstallerInstall(frame);
     }
 
     private void createUIComponents()
     {
-        DefaultMutableTreeNode top = new DefaultMutableTreeNode("Modules");
-
-        loadModules(top);
-
-        tree1.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        loadModules();
     }
 
-    private void loadModules(DefaultMutableTreeNode top)
+    private void loadModules()
     {
+        String[] columnNames = {"Selected", "Name"};
+        Object[][] data = new Object[0][2];
+
+        TableModel model = new DefaultTableModel(data, columnNames)
+        {
+            @Override
+            public Class<?> getColumnClass(int columnIndex)
+            {
+                if (getColumnName(columnIndex).equals("Selected"))
+                {
+                    return Boolean.class;
+                }
+                return super.getColumnClass(columnIndex);
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column)
+            {
+                return column == 0 && !getValueAt(row, 1).toString().endsWith("Required");
+            }
+        };
+
+        table1 = new JTable(model);
+
         try
         {
             String text = "";
@@ -85,17 +89,10 @@ public class ModuleSelection
 
                 System.out.println("Found module: " + name + ", isREquired: " + isRequired);
 
-                DefaultMutableTreeNode catagory = new DefaultMutableTreeNode(name);
+                Object[] moduleData = {isRequired, name + (isRequired ? " - Required" : "")};
 
-                catagory.setAllowsChildren(false);
-
-                top.add(catagory);
+                ((DefaultTableModel)table1.getModel()).addRow(moduleData);
             }
-
-            tree1 = new JTree(top);
-
-            TreeRenderer renderer = new TreeRenderer();
-            tree1.setCellRenderer(renderer);
         }catch(Exception e) {e.printStackTrace();}
     }
 }
