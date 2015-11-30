@@ -6,7 +6,8 @@ import javax.swing.table.TableModel;
 import java.awt.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Vector;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by Callum on 29/11/2015.
@@ -32,7 +33,19 @@ public class ModuleSelection
 
     private void onNext()
     {
-        new InstallerInstall(frame);
+        List<String> acceptedModules = new ArrayList<>();
+
+        TableModel model = table1.getModel();
+
+        for (int i = 0; i < model.getRowCount(); i++)
+        {
+            if(model.getValueAt(i, 0).toString().equals("true"))
+            {
+                acceptedModules.add(model.getValueAt(i, 1).toString().replace(" - Required", ""));
+            }
+        }
+
+        new InstallerInstall(frame, acceptedModules);
     }
 
     private void createUIComponents()

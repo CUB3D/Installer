@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.util.List;
 
 /**
  * Created by Callum on 29/11/2015.
@@ -10,8 +11,19 @@ public class InstallerInstall
     private JButton finishButton;
     private JPanel content;
 
-    public InstallerInstall(JFrame frame)
+    public InstallerInstall(JFrame frame, List<String> acceptedModules)
     {
         frame.setContentPane(content);
+        frame.pack();
+
+        for (String s : acceptedModules)
+        {
+            InstallScript.exec(s + ".ins", this);
+        }
+    }
+
+    public void printLine(String s)
+    {
+        textArea1.setText(textArea1.getText() + s + "\n");
     }
 }
