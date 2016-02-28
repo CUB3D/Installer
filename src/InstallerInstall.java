@@ -7,7 +7,7 @@ import java.util.List;
 public class InstallerInstall
 {
     private JTextArea textArea1;
-    private JProgressBar progressBar1;
+    public JProgressBar progressBar1;
     private JButton finishButton;
     private JPanel content;
 
@@ -25,5 +25,10 @@ public class InstallerInstall
     public void printLine(String s)
     {
         textArea1.setText(textArea1.getText() + s + "\n");
+    }
+
+    public void updateProgressBar(int newValue)
+    {
+        progressBar1.setValue(newValue);
     }
 }

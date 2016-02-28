@@ -39,10 +39,25 @@ public class InstallScript
         {
             gui.printLine(parseString(split[1]));
         }
+
+        if(command.equals("setProgress"))
+        {
+            gui.updateProgressBar(parseInt(split[1]));
+        }
+
+        if(command.equals("updateProgress"))
+        {
+            gui.updateProgressBar(gui.progressBar1.getValue() + parseInt(split[1]));
+        }
     }
 
     private static String parseString(String line)
     {
         return line.replaceAll("\"", "");
+    }
+
+    private static int parseInt(String line)
+    {
+        return Integer.parseInt(line);
     }
 }
