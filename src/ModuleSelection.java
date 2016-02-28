@@ -100,7 +100,7 @@ public class ModuleSelection
 
                 boolean isRequired = object1.getBoolean("required");
 
-                System.out.println("Found module: " + name + ", isREquired: " + isRequired);
+                System.out.println("Found module: " + name + ", isRequired: " + isRequired);
 
                 Object[] moduleData = {isRequired, name + (isRequired ? " - Required" : "")};
 
