@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -48,6 +49,21 @@ public class InstallScript
         if(command.equals("updateProgress"))
         {
             gui.updateProgressBar(gui.progressBar1.getValue() + parseInt(split[1]));
+        }
+
+        if(command.equals("extract"))
+        {
+            String zipName = parseString(split[1]);
+            String outFolder = parseString(split[2]);
+
+            gui.printLine("Extracting " + zipName + " to " + outFolder);
+
+            try
+            {
+                InstallUtils.extract(zipName, outFolder);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
