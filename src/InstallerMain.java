@@ -59,7 +59,7 @@ public class InstallerMain
 
     private void advance()
     {
-        new ModuleSelection(frame);
+        new ModuleSelection(content, frame);
     }
 
     public static void main(String[] args) throws IOException

@@ -22,13 +22,17 @@ public class ModuleSelection
 
     private JFrame frame;
 
-    public ModuleSelection(JFrame frame)
+    public ModuleSelection(JPanel oldContent, JFrame frame)
     {
         frame.setContentPane(content);
         frame.pack();
         nextButton.addActionListener((a) -> onNext());
 
         this.frame = frame;
+
+        cancelButton.addActionListener(a -> frame.dispose());
+
+        backButton.addActionListener(a -> frame.setContentPane(oldContent));
     }
 
     private void onNext()
