@@ -2,6 +2,7 @@
   <library name="json-20151123">
     <CLASSES>
       <root url="jar://$USER_HOME$/Downloads/json-20151123.jar!/" />
+      <root url="jar://B:/Development/java/Libs/JSON/json-20151123.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

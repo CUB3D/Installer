@@ -20,6 +20,8 @@ public class InstallerInstall
         {
             InstallScript.exec(s + ".ins", this);
         }
+
+        finishButton.addActionListener(a -> frame.dispose());
     }
 
     public void printLine(String s)
