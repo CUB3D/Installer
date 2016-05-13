@@ -40,7 +40,6 @@ public class InstallerMain
         p.load(Files.newInputStream(Paths.get("Init.cfg")));
 
         String iconPath = p.getProperty("Installer.Icon");
-        System.out.println(iconPath);
         mainIcon.setIcon(new ImageIcon(iconPath));
 
         String text = "";
