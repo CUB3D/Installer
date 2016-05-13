@@ -21,7 +21,6 @@ public class InstallerMain
 {
     private JButton cancelButton;
     private JButton nextButton;
-    private JButton backButton;
     private JTextArea textArea1;
     private JPanel content;
     private JLabel mainIcon;
@@ -54,6 +53,8 @@ public class InstallerMain
         textArea1.setText(text);
 
         nextButton.addActionListener((a) -> advance());
+
+        cancelButton.addActionListener(a -> frame.dispose());
     }
 
     private void advance()
